@@ -1,0 +1,74 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: pay
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      type: app
+      service: pay
+  template:
+    metadata:
+      labels:
+        type: app
+        service: pay
+    spec:
+      containers:
+      - name: pay
+        image: jamesby99/pay:__ver__
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8083
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8083
+        env:
+        - name: _DATASOURCE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+               name: pay-cm
+               key: db-address
+        - name: _DATASOURCE_TABLESPACE
+          valueFrom:
+            configMapKeyRef:
+               name: pay-cm
+               key: db-table-sapce
+        - name: _DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+               name: pay-secret
+               key: db-user
+        - name: _DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+               name: pay-secret
+               key: db-pw
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pay
+spec:
+  ports:
+  - port: 8083
+    targetPort: 8083
+    protocol: TCP
+  selector:
+    type: app
+    service: pay
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: pay
+spec:
+  maxReplicas: 20
+  minReplicas: 3
+  scaleTargetRef:
+    apiVersion: extensions/v1
+    kind: Deployment
+    name: pay
+  targetCPUUtilizationPercentage: 5
