@@ -106,8 +106,8 @@ spring:
     url: jdbc:mysql://3.34.223.233:3306/db_tanda_taxi?autoReconnect=true&serverTimezone=JST&useUnicode=true&characterEncoding=UTF-8
 #    username: tandataxi
 #    password: tanda2020
-    username: ${_DATASOURCE_NAME_DOCKER}
-    userpassword: ${_DATASOURCE_PASSWORD_DOCKER}
+    username: ${_DATASOURCE_USERNAME}
+    userpassword: ${_DATASOURCE_PASSWORD}
     driverClassName: com.mysql.cj.jdbc.Driver
 api:
   url:
