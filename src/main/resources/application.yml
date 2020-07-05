@@ -9,7 +9,7 @@ spring:
           brokers: localhost:9092
       bindings:
         input:
-          group: taxidispatch
+          group: pay
           destination: tanda
           contentType: application/json
         output:
@@ -30,10 +30,11 @@ spring:
     username: ${_DATASOURCE_USERNAME}
     password: ${_DATASOURCE_PASSWORD}
     driverClassName: com.mysql.cj.jdbc.Driver
-api:
-  url:
-    pay: http://localhost:8083
+
 ---
+server:
+  port: 8083
+
 spring:
   profiles: aws
   cloud:
@@ -43,7 +44,7 @@ spring:
           brokers: 3.34.223.233:9092
       bindings:
         input:
-          group: taxidispatch
+          group: pay
           destination: tanda
           contentType: application/json
         output:
@@ -65,15 +66,7 @@ spring:
     username: ${_DATASOURCE_NAME_DOCKER}
     password: ${_DATASOURCE_PASSWORD_DOCKER}
     driverClassName: com.mysql.cj.jdbc.Driver
-
-feign:
-  hystrix:
-    enabled: true
     
-api:
-  url:
-    pay: http://localhost:8083
-
 ---
 server:
   port: 8083
@@ -86,7 +79,7 @@ spring:
           brokers: my-kafka.kafka.svc.cluster.local:9092
       bindings:
         input:
-          group: taxidispatch
+          group: pay
           destination: tanda
           contentType: application/json
         output:
@@ -101,7 +94,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL57Dialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
     url: jdbc:mysql://${_DATASOURCE_ADDRESS}/${_DATASOURCE_TABLESPACE}?autoReconnect=true&serverTimezone=JST&useUnicode=true&characterEncoding=UTF-8
     username: tandataxi
@@ -109,6 +102,3 @@ spring:
 #    username: ${_DATASOURCE_USERNAME}
 #    userpassword: ${_DATASOURCE_PASSWORD}
     driverClassName: com.mysql.cj.jdbc.Driver
-api:
-  url:
-    pay: http://localhost:8083

@@ -16,15 +16,22 @@ spec:
     spec:
       containers:
       - name: pay
-        image: jamesby99/pay:__ver__
+        image: jamesby99/pay:latest
         livenessProbe:
           httpGet:
             path: /
             port: 8083
+          initialDelaySeconds: 5
+          periodSeconds: 15
+          timeoutSeconds: 2            
+            
         readinessProbe:
           httpGet:
             path: /
             port: 8083
+          initialDelaySeconds: 5
+          timeoutSeconds: 1                      
+            
         env:
         - name: _DATASOURCE_ADDRESS
           valueFrom:
@@ -66,9 +73,9 @@ metadata:
   name: pay
 spec:
   maxReplicas: 20
-  minReplicas: 3
+  minReplicas: 2
   scaleTargetRef:
     apiVersion: extensions/v1
     kind: Deployment
     name: pay
-  targetCPUUtilizationPercentage: 5
+  targetCPUUtilizationPercentage: 50
