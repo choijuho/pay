@@ -103,7 +103,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL57Dialect
   datasource:
-    url: jdbc:mysql://3.34.223.233:3306/db_tanda_taxi?autoReconnect=true&serverTimezone=JST&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://${_DATASOURCE_ADDRESS}/${_DATASOURCE_TABLESPACE}?autoReconnect=true&serverTimezone=JST&useUnicode=true&characterEncoding=UTF-8
 #    username: tandataxi
 #    password: tanda2020
     username: ${_DATASOURCE_USERNAME}
